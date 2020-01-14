@@ -16,7 +16,7 @@ const port = 1234
 type HelloWorldHandler struct{}
 
 // HelloWorld method of HelloWorldHandler
-func (h HelloWorldHandler) HelloWorld(args *contract.HelloWorldRequest, reply *contract.HelloWorldResponse) error {
+func (h *HelloWorldHandler) HelloWorld(args *contract.HelloWorldRequest, reply *contract.HelloWorldResponse) error {
 	reply.Message = "Hello " + args.Name
 	return nil
 }
@@ -27,7 +27,7 @@ func StartServer() {
 	rpc.Register(helloWorld)
 	rpc.HandleHTTP()
 
-	l, err := net.Listen("tpc", fmt.Sprintf(":%v", port))
+	l, err := net.Listen("tcp", fmt.Sprintf(":%v", port))
 	if err != nil {
 		log.Fatal(fmt.Sprintf("Unable to listen on given port %s", err))
 	}

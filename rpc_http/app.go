@@ -8,12 +8,14 @@ import (
 )
 
 func main() {
+	fmt.Println("A0")
 	server.StartServer()
-
+	fmt.Println("A1")
 	c := client.CreateClient()
 	defer c.Close()
+	fmt.Println("A2")
 
 	reply := client.PerformRequest(c)
-
+	fmt.Println("A3")
 	fmt.Println(reply.Message)
 }

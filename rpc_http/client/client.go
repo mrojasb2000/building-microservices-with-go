@@ -12,7 +12,7 @@ const port = 1234
 
 // CreateClient create new instance of RPC client.
 func CreateClient() *rpc.Client {
-	client, err := rpc.DialHTTP("tpc", fmt.Sprintf("localhost:%v", port))
+	client, err := rpc.DialHTTP("tcp", fmt.Sprintf("localhost:%v", port))
 	if err != nil {
 		log.Fatal("dialing:", err)
 	}
