@@ -1,0 +1,3 @@
+github.com/mrojasb2000/building-microservices-with-go v0.0.0-20200114155638-633da584d341 h1:CqB0Woqlmb3HRVl0s46jHffKCvghR2XRjfDiVhUMH+Y=
+github.com/mrojasb2000/building-microservices-with-go/rpc_http v0.0.0-20200114155638-633da584d341 h1:7BXJPNOX7MNWypAvB9SqBH4BCRxEgGePjaNsms/gWXw=
+github.com/mrojasb2000/building-microservices-with-go/rpc_http v0.0.0-20200114155638-633da584d341/go.mod h1:FDxH0k51AMxbtSjv9AehMzni3ZDSz9c+ZZHoqBW9uIU=
