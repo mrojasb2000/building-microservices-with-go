@@ -35,3 +35,9 @@ This pattern is exactly what is implemented with the Marshal function. In the in
 
 
 `go run reading_writing_json_1.go`
+
+Using the strut field's tags, we can have greater control of how the output will look. In the preceding example. when we marshal this struct the output from our server would be:
+
+{"message": "Hello World!"}
+
+`go run reading_writing_json_2.go`
