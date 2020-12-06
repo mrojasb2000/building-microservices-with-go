@@ -9,6 +9,9 @@ import (
 
 type helloWorldResponse struct {
 	Message string `json:"message"`
+	Author  string `json:"-"`
+	Date    string `json:",omitempty"`
+	ID      int    `json:"Id, string"`
 }
 
 func helloWorldHandler(w http.ResponseWriter, r *http.Request) {
