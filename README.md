@@ -62,3 +62,7 @@ Remember two things:
 * You do not write code for the compiler, you write code for humans to understand
 * You will spend more time reading code than you do writing it
 
+`go run reading_writing_json_3.go`
+`go run reading_writing_json_4.go`
+`go run reading_writing_json_5.go`
+
