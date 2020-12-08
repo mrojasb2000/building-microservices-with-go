@@ -41,3 +41,23 @@ Using the strut field's tags, we can have greater control of how the output will
 {"message": "Hello World!"}
 
 `go run reading_writing_json_2.go`
+
+
+## Unmarshalling JSON to Go structs
+
+Now we have learnd how we can send JSON back to the client, what if we need to read input before returning the output? We could use URL parameters and we will see what that is all about in the next chapter, but commonly you will need more complex data structures that involve the service to accept JSON as part of an HTTP POST request.
+
+Appliying similar techniques that we learned in the previous section to write JSON, reading JSON is just as easy. To decode JSON into a struct field the encoding/json package provides us with the Unmarshal function:
+
+func Unmarshal(data []byte, v interface{}) error
+
+The Unmarshal function works in the opposite way to Marshal; it allocates maps, slices, and pointers as required. Incoming object keys are matched using either the struct field name or its tag and will work a case-insensitive match; however, an exact match is preferred. Like Marshal, Unmarshal will only set exported struct fields, those that start with an upper-case letter.
+
+We start by adding a new struct field to represent the request, whilst Unmarshal can decode the JSON into an interface{}, which would be of map[string]interface{} // for JSON objects type or: []interface{} // for JSON arrays, depending if out JSON is an object or an array.
+
+In my opinion it is much clearer to the readers of our code if we explicity state what we are expecting as a request. We can also save ourselves work by not having to manually cast the data when we come to use it.
+
+Remember two things:
+
+* You do not write code for the compiler, you write code for humans to understand
+* You will spend more time reading code than you do writing it
