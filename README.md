@@ -66,3 +66,49 @@ Remember two things:
 `go run reading_writing_json_4.go`
 `go run reading_writing_json_5.go`
 
+
+### Routing in net/http
+
+Even a simple microservice will need the capabilility to route requests to diferent handlers dependent on the requested path or method. In Go this is handled by the DefaultServerMux method which is an instance of ServerMux. Earlier in this chapter, we briefly covered that when nil is passed to the handler parameter for the ListenAndServe function then the DefaultServeMux method is used. When we call the http.HandleFunc("/helloWorld", helloWorldHandler) package function we are actually just indirectly calling http.DefaultServerMux.HandleFunc(...).
+
+The Go HTTP server does not have a specific router instead any object which implements the http.Handler interface is passed as a top level function to the Listen() function, when a request comes into the server the ServeHTTP method of this handler is called and it is responsible for performing or delegating any work. To facilitate the handling of multiple routes the HTTP package has a special object called ServerMux, which implements the http.Handler interface.
+
+There are two functions to adding handlers to a ServerMux handler:
+
+    func HandlerFunc(pattern string, handler func(ResponseWriter, *Request))
+    func Handle(pattern string, handler Handler)
+
+The HandlerFunc function is a convenience function that creates a handler who's ServeHTTP method calls an ordinary function with the func(ResponseWriter, *Request) signature that you pass as a parameter.
+
+The Handle function requires that you pass two parameters, the pattern that you would like to register the handler and an object that implements the Handler interfaces:
+
+    type Handler interface {
+        ServeHTTP(ResponseWriter, *Request)
+    }
+
+
+### Paths
+
+We already explained how ServeMux is responsable for routing inbound requests to the regustered handlers, however the way that the router has a very simple routing model it does not support wildcards or regular expressions, with ServeMux you must be expicit about the registered paths.
+
+You can register both fixed rooted paths, such as /images/file.png, or rooted subtrees such as /images/. The trailing slash in the rooted subtree is important as any request that starts with /images/, for example /images/other_file.png, would be routed to the handler associated with /images/.
+
+if we register a path /images/ to the handler foo, and the user makes a request to our service as /images (note no trailing slash), then ServeMux will forward the request to the /images/ handler, appending a trailing slash.
+
+if we also regsiter the path /images (note no trailing slash) to the handler bar the user requests /images then this request will be directed to bar; however, /images/ or /images/file.png will be directed to foo:
+
+    http.Handle("/images/", newFooHandler())
+    http.Handle("/images/persiab/", newBarHandler())
+    http.Handle("/images", newBuzzHandler())
+
+    /images                 => Buzz
+    /images/                => Foo
+    /images/cat             => Foo
+    /images/cat.png         => Foo
+    /images/oersian/cat.png => Bar
+
+Longer paths will always take precedence over shorte ones so it is posible to have an explicit toute that points to a different handler to a catch all route.
+
+We can also specify the hostname, we could register a path souch as search.google.com/ and /ServeMux would forward any requests to http://search.google.com and http://www.google.com to their respective handlers.
+
+If you are used to a framework based application development approach such as using Ruby on Rails or ExpressJS you may find this router incredibly simple and it is, remember that we are not using a framework but the standard packages of Go, the intention is always to provide a basis that can be built upon. In very simple cases the ServeMux approach more than good
