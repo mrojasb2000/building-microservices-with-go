@@ -131,4 +131,8 @@ The NotFoundHandler function returns a simple request handler that replices to e
 
     func NotFoundHandler() Handler
 
-    
+### RedirectHandler
+
+The RedirectHandler function returns a request handler that redirects each request it receives to the given URI status code. The provided code should be in the 3xx range and is usually StatusMovedPermanently, StatusFound, or StatusSeeOther:
+
+    func RedirectHandler(url string, code int) Handler
