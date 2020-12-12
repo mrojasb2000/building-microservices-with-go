@@ -123,4 +123,12 @@ Take a look at the following code:
 
     http.Handle("/images", http.FileServer(http.Dir("./images")))
 
-this allows us to map the contents of the file system path ./images to the server route /images, Dir implements a file system which is restricted to a specific directory tree, the FileServer method uses this to be able to serve the assests.    
+this allows us to map the contents of the file system path ./images to the server route /images, Dir implements a file system which is restricted to a specific directory tree, the FileServer method uses this to be able to serve the assests.
+
+### NotFoundHandler
+
+The NotFoundHandler function returns a simple request handler that replices to each request qith a 404 page not found reply:
+
+    func NotFoundHandler() Handler
+
+    
