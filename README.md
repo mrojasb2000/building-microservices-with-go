@@ -133,6 +133,12 @@ The NotFoundHandler function returns a simple request handler that replices to e
 
 ### RedirectHandler
 
-The RedirectHandler function returns a request handler that redirects each request it receives to the given URI status code. The provided code should be in the 3xx range and is usually StatusMovedPermanently, StatusFound, or StatusSeeOther:
+The RedirectHandler function returns a request handler that redirects each request it receives to the given URI using the given status code. The provided code should be in the 3xx range and is usually StatusMovedPermanently, StatusFound, or StatusSeeOther:
 
     func RedirectHandler(url string, code int) Handler
+
+### StripPrefix
+
+The StripPrefix function returns a handler that serves HTTP requests by removing the given prefix from the request URL's path and then invoking h handler. If a path does not exist, then StripPrefix will reply with an HTTP 404 not found error:
+
+    func StripPrefix(prefix string, h handler) Handler
