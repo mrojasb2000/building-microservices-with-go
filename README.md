@@ -111,4 +111,16 @@ Longer paths will always take precedence over shorte ones so it is posible to ha
 
 We can also specify the hostname, we could register a path souch as search.google.com/ and /ServeMux would forward any requests to http://search.google.com and http://www.google.com to their respective handlers.
 
-If you are used to a framework based application development approach such as using Ruby on Rails or ExpressJS you may find this router incredibly simple and it is, remember that we are not using a framework but the standard packages of Go, the intention is always to provide a basis that can be built upon. In very simple cases the ServeMux approach more than good
+If you are used to a framework based application development approach such as using Ruby on Rails or ExpressJS you may find this router incredibly simple and it is, remember that we are not using a framework but the standard packages of Go, the intention is always to provide a basis that can be built upon. In very simple cases the ServeMux approach more than good enough and in fact I personally don't use anything else. Everyone's needs are different however and the beauty and simple to build your own route as all is needed is an object which implements the Handler interface. A quick trawl through google will surface some very good third party routes but my recommendation for you is to learn the limitations of ServeMux first before deciding to choose a third-party package it will greatly help with your decision process as you will know the problem you are trying to solve.
+
+### FileServer
+
+A FileServer function returns a handler that server HTTP requests with the contents of the filesystem. This can be used to serve static files such as images or other content that is stored on the file system:
+
+    func FileServer(root FileSystem) Handler
+
+Take a look at the following code:
+
+    http.Handle("/images", http.FileServer(http.Dir("./images")))
+
+this allows us to map the contents of the file system path ./images to the server route /images, Dir implements a file system which is restricted to a specific directory tree, the FileServer method uses this to be able to serve the assests.    
