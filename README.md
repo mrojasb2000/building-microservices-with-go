@@ -142,3 +142,24 @@ The RedirectHandler function returns a request handler that redirects each reque
 The StripPrefix function returns a handler that serves HTTP requests by removing the given prefix from the request URL's path and then invoking h handler. If a path does not exist, then StripPrefix will reply with an HTTP 404 not found error:
 
     func StripPrefix(prefix string, h handler) Handler
+
+### TimeoutHandler
+
+The TimeoutHandler function returns a Handler interface that runs h with the given time limit. When we investigate common patterns in Microservices Frameworks, we will see just how useful this can be for avoiding cascading failures in your service:
+
+    func TimeoutHandler(h Handler, dt time.Duration, msg string) Handler
+
+The new handler calls h.ServeHTTP to handle each request, but if a call runs for longer than its time limit, the handler responds with a 503 Service Unavailable response with the given message (msg) in its body.
+
+The last two handlers are especially interesting as they are, in effect, chaining handlers. This is a technique that we will go into more in-depth in a later chapter as it allow you to both practice clean code and allows you to keep your code DRY.
+
+I may have lifted most of the descriptions for these handlers straight from the Go documentation and you probably have already read these because you have read the documentation right? With Go, the documentation is excellent and writing documentation for you own packages is heavily encouraged, even enforced, if you use the golint command that comes with the standard package then this will report areas of your code which do not conform to the standard. I really recommend spending a little time browsing the standard docs when you are using one of the packages, not only will you learn the correct usage, you may learn that there is a better approach. You will certainly be exposed to good practice and style and you may even be able to keep working on the sad that Stack Overflow stops working and the entire industry grinds to a halt.
+
+
+### Static file handler
+
+Whilst we are mostly going to be dealing with APIs in this book, it is a useful illustration to see how the default router and paths work by adding a secondary endpoint.
+
+As a litle exercise, to add an enpoint /cat, which returns the cat picture specified in the URI. To give you a litle hint, you are going to need to use the FileServer function on the net/http package and your URI will look something like http://localhost:8080/cat/cat.jpg.
+
+In en preceding example, we are registering a StripPrefix handler with out path /cat/. If we not do this, then the FileServer handler would be looking for our image in the images/cat directory. It is also worth reminding ourselves about the difference with /cat and /cat/ as paths. If we resgitered out paths as /cat then we would not match /cat/cat.jpg. If we register our path as /cat/, we will match both /cat and /cat/whatever.
